@@ -8,13 +8,8 @@
 *.css linguist-language=CSS
 *.js linguist-language=JavaScript
 
-# Include HTML files but reduce their weight
-*.html linguist-language=HTML
+# Exclude all HTML files from being counted in language stats
+*.html linguist-vendored=true
 
-# Exclude large or unnecessary HTML files from being counted in stats
+# Exclude large or unnecessary HTML files specifically
 Hybrid\ WAF.html linguist-vendored=true
-
-# Ignore unnecessary files (compiled Python, model files, etc.)
-*.pyc linguist-generated
-__pycache__/** linguist-generated
-*.pkl linguist-generated
