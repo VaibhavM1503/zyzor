@@ -1,0 +1,17 @@
+# Force Python files to be counted as Python
+*.py linguist-language=Python
+
+# Include the entire src/ folder as Python
+/src/** linguist-language=Python
+
+# Ignore HTML files completely (so they don't show up in language stats)
+*.html linguist-vendored=true
+
+# Explicitly include CSS and JS files for stats
+*.css linguist-language=CSS
+*.js linguist-language=JavaScript
+
+# Ignore unnecessary files (compiled Python, model files)
+*.pyc linguist-generated
+__pycache__/** linguist-generated
+*.pkl linguist-generated
