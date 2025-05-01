@@ -4,12 +4,17 @@
 # Include the entire src/ folder as Python
 /src/** linguist-language=Python
 
-# Include HTML files in language stats
-*.html linguist-language=HTML
-
 # Include CSS and JS files in language stats
 *.css linguist-language=CSS
 *.js linguist-language=JavaScript
 
-# Do not ignore compiled Python files or model files (they will be counted in stats)
+# Include HTML files but exclude specific ones (like large or generated HTML)
+*.html linguist-language=HTML
 
+# Ignore specific HTML files from language stats (if necessary)
+Hybrid\ WAF.html linguist-vendored=true
+
+# Ignore unnecessary files (compiled Python, model files, etc.)
+*.pyc linguist-generated
+__pycache__/** linguist-generated
+*.pkl linguist-generated
