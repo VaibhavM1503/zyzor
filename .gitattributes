@@ -8,9 +8,9 @@
 *.css linguist-language=CSS
 *.js linguist-language=JavaScript
 
-# Include only home.html and index.html for HTML language stats
+# Specifically count home.html and index.html as HTML
 home.html linguist-language=HTML
 index.html linguist-language=HTML
 
-# Exclude all other HTML files (e.g., Hybrid WAF.html) from language stats
+# Exclude all other HTML files from language stats
 *.html linguist-vendored=true
