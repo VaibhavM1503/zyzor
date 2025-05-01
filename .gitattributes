@@ -8,8 +8,8 @@
 *.css linguist-language=CSS
 *.js linguist-language=JavaScript
 
-# Only count home.html as HTML
-home.html linguist-language=HTML
+# Only count Hybrid WAF.html as HTML
+Hybrid\ WAF.html linguist-language=HTML
 
 # Exclude all other HTML files from language stats
 *.html linguist-vendored=true
