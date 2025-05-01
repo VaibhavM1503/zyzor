@@ -2,7 +2,8 @@
 
 WAFinity is a advanced Web Application Firewall (WAF) that combines signature-based detection with machine learning-based anomaly detection to protect web applications from known and unknown threats.
 
-How it works
+## **How it works**
+
 ![WAF Flow](./Hybrid%20WAF_files/WAF%20flow.jpg)
 
 
@@ -45,7 +46,7 @@ python app.py
 MIT License
 " > README.md
 
-# Add and commit README
+## Add and commit README
 git add README.md
 git commit -m "Add README.md"
 git push
