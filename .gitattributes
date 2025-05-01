@@ -10,8 +10,3 @@
 # Include CSS and JS files in language stats
 *.css linguist-language=CSS
 *.js linguist-language=JavaScript
-
-# Ignore unnecessary files (compiled Python, model files)
-*.pyc linguist-generated
-__pycache__/** linguist-generated
-*.pkl linguist-generated
