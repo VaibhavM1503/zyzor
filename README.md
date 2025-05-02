@@ -18,6 +18,20 @@ In addition to signature-based detection, it uses **machine learning-based anoma
 - 📊 Interactive Security Insights
 - 🚀 Fast response time
 
+## Output Screenshots
+
+<img src="./screenshots/waf-ss1.png" width="600"/>
+<br>
+<img src="./screenshots/waf-ss2.png" width="600"/>
+<br>
+<img src="./screenshots/waf-ss3.png" width="600"/>
+<br>
+<img src="./screenshots/waf-ss4.png" width="600"/>
+<br>
+<img src="./screenshots/waf-ss5.png" width="600"/>
+<br>
+<img src="./screenshots/waf-ss6.png" width="600"/>
+
 ## Tech Stack
 
 - Python/Flask
