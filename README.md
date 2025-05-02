@@ -20,17 +20,23 @@ In addition to signature-based detection, it uses **machine learning-based anoma
 
 ##  Output Screenshots
 
-<img src="./output-screenshots/waf-ss1.png" width="600"/>
-<br>
-<img src="./output-screenshots/waf-ss2.png" width="600"/>
-<br>
-<img src="./output-screenshots/waf-ss3.png" width="600"/>
-<br>
-<img src="./output-screenshots/waf-ss4.png" width="600"/>
-<br>
-<img src="./output-screenshots/waf-ss5.png" width="600"/>
-<br>
-<img src="./output-screenshots/waf-ss6.png" width="600"/>
+## 🖼️ Output Screenshots (Side by Side)
+
+<p float="left">
+    <img src="./output-screenshots/waf-ss1.png" width="400"/>
+    <img src="./output-screenshots/waf-ss2.png" width="400"/>
+</p>
+
+<p float="left">
+    <img src="./output-screenshots/waf-ss3.png" width="400"/>
+    <img src="./output-screenshots/waf-ss4.png" width="400"/>
+</p>
+
+<p float="left">
+    <img src="./output-screenshots/waf-ss5.png" width="400"/>
+    <img src="./output-screenshots/waf-ss6.png" width="400"/>
+</p>
+
 
 
 
