@@ -18,14 +18,20 @@ In addition to signature-based detection, it uses **machine learning-based anoma
 - 📊 Interactive Security Insights
 - 🚀 Fast response time
 
-## Output Screenshots
+##  Output Screenshots
 
-![WAF Screenshot 1](./output-screenshots/waf-ss1.png)
-![WAF Screenshot 2](./output-screenshots/waf-ss2.png)
-![WAF Screenshot 3](./output-screenshots/waf-ss3.png)
-![WAF Screenshot 4](./output-screenshots/waf-ss4.png)
-![WAF Screenshot 5](./output-screenshots/waf-ss5.png)
-![WAF Screenshot 6](./output-screenshots/waf-ss6.png)
+<img src="./output-screenshots/waf-ss1.png" width="600"/>
+<br>
+<img src="./output-screenshots/waf-ss2.png" width="600"/>
+<br>
+<img src="./output-screenshots/waf-ss3.png" width="600"/>
+<br>
+<img src="./output-screenshots/waf-ss4.png" width="600"/>
+<br>
+<img src="./output-screenshots/waf-ss5.png" width="600"/>
+<br>
+<img src="./output-screenshots/waf-ss6.png" width="600"/>
+
 
 
 ## Tech Stack
