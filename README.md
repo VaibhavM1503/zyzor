@@ -25,6 +25,47 @@ In addition to signature-based detection, it uses **machine learning-based anoma
 - HTML/CSS
 - Machine Learning
 
+## 🧪 Example Requests
+### ✅ Valid Requests
+**1. Homepage**
+GET / HTTP/1.1
+Host: www.example.com
+
+**2. Product listing**
+GET /products?category=electronics&page=2 HTTP/1.1
+Host: www.ecommerce.com
+Referer: https://www.ecommerce.com/products
+
+**3. Single product**
+GET /product/12345 HTTP/1.1
+Host: www.ecommerce.com
+Referer:https://www.ecommerce.com/products?category=electronics&page=2
+
+**4. Add to cart (POST with JSON body)**
+POST /cart/add HTTP/1.1
+Host: www.ecommerce.com
+Content-Type: application/json
+Content-Length: 45
+
+{"productId": "12345", "quantity": 1}
+
+### ❌Signature-Based Detection (Malicious Input)
+**1. SQL Injection via search**
+GET /search?q=' OR '1'='1'; DROP TABLE users;-- HTTP/1.1
+Host: www.example.com
+
+**2. XSS in comment**
+GET /comment?text=<script>alert('XSS')</script> HTTP/1.1
+Host: www.example.com
+
+**3. XSS using eval**
+GET /comment?text=<script>eval(String.fromCharCode(97,108,101,114,116,40,39,88,83,83,39,41))</script> HTTP/1.1
+Host: www.example.com
+
+**4. SQL Injection with UNION**
+GET /search?q=1' UNION SELECT username,password FROM users-- HTTP/1.1
+Host: www.example.com
+
 ## Setup
 
 1. Clone the repository:
