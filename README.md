@@ -36,6 +36,7 @@ In addition to signature-based detection, it uses **machine learning-based anoma
     <img src="./output-screenshots/waf-ss6.png" width="400"/>
 </p>
 
+
 ## Tech Stack
 
 - Python/Flask
