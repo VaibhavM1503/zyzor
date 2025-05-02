@@ -29,8 +29,8 @@ In addition to signature-based detection, it uses **machine learning-based anoma
 
 1. Clone the repository:
 \`\`\`bash
-git clone https://github.com/YOUR_USERNAME/WAFinity.git
-cd WAFinity
+git clone https://github.com/YOUR_USERNAME/Advanced-WAF-WAFinity.git
+cd Advanced-WAF-WAFinity
 \`\`\`
 
 2. Install dependencies:
