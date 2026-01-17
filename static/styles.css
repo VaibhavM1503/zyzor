@@ -5,6 +5,13 @@ body {
     font-family: "Orbitron", sans-serif;
     overflow-x: hidden;
     position: relative;
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
 }
 
 /* Starfield Canvas Background */
@@ -1311,12 +1318,19 @@ body::before {
 
 @media (max-width: 768px) {
     .checker-container {
-        padding: 2rem;
+        padding: 1.5rem;
         width: 95%;
+        margin-top: 2rem;
     }
 
     .checker-header h2 {
         font-size: 1.8rem;
+    }
+
+    #user-input {
+        font-size: 0.9rem;
+        /* Prevent zoom on mobile */
+        padding: 1rem;
     }
 }
 
