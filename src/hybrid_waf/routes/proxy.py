@@ -1,69 +1,31 @@
 from flask import Blueprint, request, jsonify
-from src.hybrid_waf.utils.signature_checker import check_signature
-import logging
-
-# Create a dedicated logger for WAF detections
-waf_logger = logging.getLogger('waf_detections')
-waf_logger.setLevel(logging.INFO)
-
-# Create file handler
-fh = logging.FileHandler('logs/detections.log')
-fh.setLevel(logging.INFO)
-
-# Create formatter
-formatter = logging.Formatter('%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-fh.setFormatter(formatter)
-
-# Add the handler to the logger
-waf_logger.addHandler(fh)
+from src.hybrid_waf.waf_logic import WAFEngine
 
 proxy_bp = Blueprint('proxy', __name__)
 
 @proxy_bp.route('/check_request', methods=['POST'])
 def check_request():
+    """
+    Main entry point for the WAF.
+    Receives user input (raw request), sends to WAFEngine, returns JSON.
+    """
     data = request.get_json()
+    raw_input = data.get("user_request", "")
     
-    user_input = data.get("user_request", "")
-    uri = data.get("uri", user_input)
-    get_data = data.get("get_data", "")
-    post_data = data.get("post_data", "")
-    
-    # --- Step 1: Signature-Based Detection ---
-    signature_result = check_signature(user_input)
-    
-    if signature_result == "valid":
-        waf_logger.info(f"{user_input} - valid")
-        return jsonify({
-            "status": "valid",
-            "message": "All Clear! Your request passed our security checks with flying colors.✨"
-        })
+    # Get client IP (simulated or real)
+    client_ip = request.headers.get("X-Forwarded-For", request.remote_addr)
 
-    if signature_result == "malicious":
-        waf_logger.info(f"{user_input} - malicious(signature)")
-        return jsonify({
-            "status": "malicious",
-            "message": "Critical Alert! Malicious pattern detected in your request.<br>Access Denied!🔒"
-        })
+    # Use the new Engine
+    response_data = WAFEngine.inspect_request(client_ip, raw_input)
     
-    # --- Step 2: ML-Based Anomaly Detection (Only for obfuscated requests) ---
-    if signature_result == "obfuscated":
-        from src.hybrid_waf.utils.preprocessor import extract_features
-        from src.hybrid_waf.utils.ml_checker import check_ml_prediction
-        
-        features = extract_features(uri, get_data, post_data)
-        prediction = check_ml_prediction(features)
-        
-        final_status = "malicious" if prediction == 1 else "valid"
-        
-        waf_logger.info(f"{user_input} - malicious(ML)" if prediction == 1 else f"{user_input} - valid")
-            
-        return jsonify({
-            "status": "obfuscated",
-            "ml_verdict": (
-                "🚨 Threat Confirmed! AI Defense System Blocked Suspicious Activity.🔒" 
-                if final_status == "malicious" 
-                else "✅ Advanced AI Scan Complete: Request Verified Safe ✨"
-            ),
-            "message": "Suspicious Pattern Detected - Engaging Advanced AI Analysis...",
-            "features": features
-        })
+    # Return 200 OK so the frontend Javascript can process the JSON payload
+    # Even if blocked, we return 200 http status so the UI logic runs.
+    return jsonify(response_data), 200
+
+@proxy_bp.route('/api/stats', methods=['GET'])
+def get_stats():
+    """
+    Returns the live stats for the dashboard.
+    """
+    stats = WAFEngine.get_dashboard_stats()
+    return jsonify(stats)

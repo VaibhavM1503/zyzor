@@ -1,0 +1,78 @@
+PROJECT EXPLANATION & INTERVIEW PREPARATION GUIDE
+--------------------------------------------------
+CONTEXT: 3rd Year B.Tech CSE Student Pitching to a Recruiter.
+PROJECT NAME: Zyzor - Hybrid AI Request Scanner.
+
+---
+
+PART 1: THE "ELEVATOR PITCH" (How to explain this in 2 minutes)
+
+"Good morning/afternoon. The project I built is called 'Zyzor', and it’s a Hybrid AI Request Scanner.
+
+The problem I identified with traditional scanners is that they rely purely on static rules (regex). If a hacker changes just one character in a malicious payload, they can often bypass the scanner. On the other hand, purely AI-based scanners can be slow and prone to false alarms.
+
+My solution, Zyzor, uses a 'Hybrid Architecture' to get the best of both worlds.
+
+Here is how it works:
+1. First, it uses a high-speed 'Traffic Control' layer to block simple spam and brute-force attacks immediately.
+2. Second, it uses a 'Signature Engine' to catch 100% of known threats like standard SQL Injection or XSS.
+3. The innovation comes in the third layer: An 'AI Anomaly Detector' trained on request features (like entropy and character ratios). This allows the system to detect 'Zero-Day' or modified attacks that have never been seen before, which static rules would miss.
+
+Beyond just blocking, I implemented a 'Self-Learning Loop' where the system remembers new attacks and retrains itself automatically, getting smarter over time. I also integrated a Generative AI (LLM) to explain *why* a request was blocked in plain English, making security accessible to non-experts.
+
+So essentially, it’s a scanner that learns, adapts, and explains itself."
+
+---
+
+PART 2: INTERVIEW Q&A (Anticipating Recruiter Questions)
+
+SECTION A: GENERAL TECHNICAL QUESTIONS
+
+Q1: "Is this a Request Scanner or a WAF?"
+Your Answer: "It acts as a Hybrid AI Request Scanner. While it shares some defensive traits with a WAF (intercepting traffic), its primary focus is deep inspection and verification of requests using AI, acting more like an intelligent filter or reverse proxy."
+
+Q2: "What Tech Stack did you use?"
+Your Answer: "I built the core engine in Python using Flask. For the Machine Learning component, I used Scikit-Learn (Random Forest) because it offers the best balance between accuracy and latency for tabular data. I used SQLite for the self-learning database due to its zero-configuration overhead for this scale."
+
+SECTION B: AI & SECURITY QUESTIONS (The "Tricky" Ones)
+
+Q3: "Why did you use Random Forest instead of a Deep Neural Network (Deep Learning)?"
+Your Answer: "Speed and explainability. In a WAF, latency is huge—you can't add 200ms to every user request. Random Forests are extremely fast for classification (under 5ms) and handle tabular features (like length, special char counts) better than deep learning models, which require massive datasets to generalize."
+
+Q4: "How does the 'Self-Learning' actually work? Prevents 'Data Poisoning'?"
+Your Answer: "When a request is blocked, its features are logged to a database. Asynchronously, a background 'Trainer' script pulls this new data and retrains the model. 
+*Recruiter Follow-up:* 'What if I send safe requests that look malicious to confuse it?'
+*Your Answer:* 'That is a risk called creating 'Adversarial Examples'. In a production version, I would implement a 'Human-in-the-Loop' review step before retraining. Currently, for the prototype, it trusts the blocking logic to label the new data."
+
+Q5: "How do you handle False Positives (Blocking a real user)?"
+Your Answer: "That's why I used the Hybrid approach. The AI only kicks in if the request passes the initial signature checks. Also, the Random Forest outputs a probability score—I can tune the 'Confidence Threshold' to only block if the model is 80% or 90% sure, minimizing false alarms."
+
+Q6: "You mentioned an LLM. Isn't that slow?"
+Your Answer: "Yes, LLMs are slow. That is why I strictly decoupled it from the detection path. The WAF blocks the request *first* (in milliseconds), and *then* calls the LLM to generate the explanation. The blocking event is instant; the fancy explanation is just a post-event reporting feature."
+
+Q7: "Why did you use 'Entropy' as a feature for the AI?"
+Your Answer: "Malicious payloads (like encrypted shells or SQL injections) often have very different character distributions than normal English text. Shannon Entropy calculates the randomness of the string. A normal username like 'admin' has low entropy; a payload like 'x' OR 1=1; --' has higher randomness and mixed character sets. It's a very strong signal for injection attacks."
+
+SECTION C: SCALABILITY QUESTIONS
+
+Q8: "How would you scale this for 1 million users?"
+Your Answer: "Currently, it runs on a single Flask dev server. To scale it:
+1. I would move the database from SQLite to PostgreSQL or Redis to handle concurrent writes.
+2. I would wrap the Flask app in a production WSGI server like Gunicorn or uWSGI behind Nginx.
+3. I would move the 'Self-Learning' training job to a totally separate server so it doesn't slow down the main firewall while training."
+
+SECTION D: VERIFICATION & TESTING STRATEGY (Proving it Works)
+
+Q9: "How do you know it actually works? How did you test it?"
+Your Answer: "To ensure reliability, I built an 'Automated Self-Check' system.
+Instead of manually typing attacks, I wrote a script ('verify_features.py') that acts like a 'Virtual Hacker'. When the server starts, this script automatically launches a series of safe, simulated attacks—SQL Injection, XSS, and more—against the firewall.
+It validates two things:
+1. That the WAF correctly detects and *BLOCKS* the malicious requests (Green Check ✅).
+2. That the WAF still *ALLOWS* normal, safe traffic.
+This automated suite runs on every startup, acting as a Continuous Integration (CI) test to prove the system's defenses are active and working in real-time."
+
+---
+
+PART 3: SUMMARY FOR RECRUITER
+
+"In simple terms, Zyzor is a security system that doesn't just block what it knows, but learns to recognize what it hasn't seen yet."

@@ -1,15 +1,32 @@
-# Force Python files to be counted as Python
-*.py linguist-language=Python
+# Auto-detect text files and perform LF normalization
+* text=auto
 
-# Include the entire src/ folder as Python
-/src/** linguist-language=Python
+# Python
+*.py text diff=python
+*.pyc binary
+__pycache__/ binary
 
-# Include CSS and JS files in language stats
-*.css linguist-language=CSS
-*.js linguist-language=JavaScript
+# Web
+*.js text
+*.css text
+*.html text
+*.json text
 
-# Only count Hybrid WAF.html as HTML
-Hybrid\ WAF.html linguist-language=HTML
+# Database
+*.db binary
+*.sqlite binary
 
-# Exclude all other HTML files from language stats
-*.html linguist-vendored=true
+# Binary Assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text
+
+# Deployment
+Procfile text
+requirements.txt text
+
+# Windows
+*.bat text eol=crlf
