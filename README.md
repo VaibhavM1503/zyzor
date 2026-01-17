@@ -66,13 +66,6 @@ Zyzor comes with a built-in "Self-Check" suite. On startup, it runs a series of 
 
 You can also send requests via `curl` or Postman:
 
-**Safe Request:**
-```bash
-curl -X POST http://localhost:5000/check_request \
-     -H "Content-Type: application/json" \
-     -d '{"user_request": "SELECT * FROM products WHERE id=1"}'
-```
-
 **Malicious Request (Blocked):**
 ```bash
 curl -X POST http://localhost:5000/check_request \
