@@ -148,6 +148,51 @@
                         <span style="color: #00f3ff;">ℹ️</span> Only use this dropdown if you don't have a specific
                         request to input.
                     </small>
+
+                    <!-- New Attack Info Dropdown -->
+                    <div class="control-wrapper" style="margin-top: 10px;">
+                        <select id="info-dropdown" class="cyber-input"
+                            style="width: 100%; padding: 0.875rem 1rem; cursor: pointer; background-color: #050510; color: #ff00ff; border: 2px solid #ff00ff; border-radius: 8px; font-family: inherit; font-size: 1rem; outline: none; transition: all 0.3s ease;">
+                            <option value="" disabled selected style="color: #888;">🤔 No idea about any attack? Click
+                                me!</option>
+                            <option value="sqli" style="color: #ff00ff; background: #050510;">SQL Injection</option>
+                            <option value="xss" style="color: #ff00ff; background: #050510;">XSS (Cross-Site Scripting)
+                            </option>
+                            <option value="csrf" style="color: #ff00ff; background: #050510;">CSRF (Cross-Site Request
+                                Forgery)</option>
+                            <option value="idor" style="color: #ff00ff; background: #050510;">IDOR (Insecure Direct
+                                Object References)</option>
+                            <option value="ssrf" style="color: #ff00ff; background: #050510;">SSRF (Server-Side Request
+                                Forgery)</option>
+                            <option value="rce" style="color: #ff00ff; background: #050510;">Command Injection / RCE
+                            </option>
+                            <option value="lfi" style="color: #ff00ff; background: #050510;">Path Traversal / LFI
+                            </option>
+                            <option value="nosql" style="color: #ff00ff; background: #050510;">NoSQL Injection</option>
+                            <option value="ldap" style="color: #ff00ff; background: #050510;">LDAP Injection</option>
+                            <option value="poison" style="color: #ff00ff; background: #050510;">Web Cache Poisoning
+                            </option>
+                            <option value="smuggling" style="color: #ff00ff; background: #050510;">HTTP Request
+                                Smuggling</option>
+                            <option value="deserialization" style="color: #ff00ff; background: #050510;">Insecure
+                                Deserialization</option>
+                            <option value="llm" style="color: #ff00ff; background: #050510;">Web LLM Injection</option>
+                            <option value="host_header" style="color: #ff00ff; background: #050510;">HTTP Host Header
+                                Attack</option>
+                        </select>
+                    </div>
+
+                    <!-- Info Display Area -->
+                    <div id="attack-info-display"
+                        style="display: none; background: rgba(5, 5, 16, 0.9); border: 1px solid #ff00ff; border-radius: 8px; padding: 15px; margin-top: 10px; color: #fff;">
+                        <h4 id="info-title" style="color: #ff00ff; margin-top: 0; margin-bottom: 10px;"></h4>
+                        <p id="info-desc" style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 10px;"></p>
+                        <div
+                            style="background: #111; padding: 10px; border-radius: 4px; border-left: 3px solid #ff00ff;">
+                            <small style="color: #aaa; display: block; margin-bottom: 5px;">EXAMPLE:</small>
+                            <code id="info-example" style="font-family: monospace; color: #00ff00;"></code>
+                        </div>
+                    </div>
                 </div>
             </div>
 
