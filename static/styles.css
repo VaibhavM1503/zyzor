@@ -253,14 +253,14 @@ body::before {
 }
 
 .testimonial-img {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     object-fit: cover;
     border-radius: 20%;
     /* Rounded blunt corners */
     margin-bottom: 1rem;
-    border: 2px solid #800000;
-    box-shadow: 0 0 15px rgba(128, 0, 0, 0.3);
+    border: 3px solid #800000;
+    box-shadow: 0 0 20px rgba(128, 0, 0, 0.4);
 }
 
 .card:hover {
