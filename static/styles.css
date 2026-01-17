@@ -620,10 +620,12 @@ body::before {
 /* Cybersecurity Animation Styles */
 .cyber-animation {
     position: relative;
-    width: 400px;
-    height: 400px;
+    width: 100%;
+    max-width: 400px;
     margin-right: 4rem;
     flex-shrink: 0;
+    /* Maintain 1:1 Aspect Ratio */
+    aspect-ratio: 1 / 1;
 }
 
 /* Scanning Radar */
@@ -631,8 +633,9 @@ body::before {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 350px;
-    height: 350px;
+    width: 88%;
+    /* Relative to container */
+    height: 88%;
     transform: translate(-50%, -50%);
     border-radius: 50%;
     border: 2px solid rgba(128, 0, 0, 0.2);
@@ -648,8 +651,9 @@ body::before {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 350px;
+    width: 88%;
     height: 2px;
+    /* Line thickness remains fixed */
     transform: translate(-50%, -50%);
     background: linear-gradient(90deg,
             transparent 0%,
@@ -659,7 +663,7 @@ body::before {
     animation: radar-rotate 4s linear infinite;
 }
 
-/* Security Shield Layers */
+/* Security Shield Layers - Percentages relative to container */
 .shield-layer {
     position: absolute;
     top: 50%;
@@ -670,34 +674,34 @@ body::before {
 }
 
 .shield-outer-layer {
-    width: 320px;
-    height: 320px;
+    width: 80%;
+    height: 80%;
     border: 3px solid rgba(128, 0, 0, 0.25);
     animation: shield-rotate 20s linear infinite;
     box-shadow: 0 0 30px rgba(128, 0, 0, 0.2);
 }
 
 .shield-middle-layer {
-    width: 240px;
-    height: 240px;
+    width: 60%;
+    height: 60%;
     border: 2px solid rgba(128, 0, 0, 0.35);
     animation: shield-rotate 15s linear infinite reverse;
     box-shadow: 0 0 25px rgba(128, 0, 0, 0.25);
 }
 
 .shield-inner-layer {
-    width: 160px;
-    height: 160px;
+    width: 40%;
+    height: 40%;
     border: 2px solid rgba(128, 0, 0, 0.45);
     animation: shield-rotate 10s linear infinite;
     box-shadow: 0 0 20px rgba(128, 0, 0, 0.3);
 }
 
-/* Network Nodes */
+/* Network Nodes - Keep roughly same visual size or scale slightly */
 .network-node {
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 4%;
+    height: 4%;
     background: radial-gradient(circle, rgba(128, 0, 0, 1), rgba(168, 65, 91, 0.8));
     border-radius: 50%;
     box-shadow: 0 0 15px rgba(128, 0, 0, 0.8), 0 0 30px rgba(128, 0, 0, 0.4);
@@ -743,8 +747,8 @@ body::before {
 /* Data Flow Particles */
 .data-particle {
     position: absolute;
-    width: 8px;
-    height: 8px;
+    width: 2%;
+    height: 2%;
     background: rgba(128, 0, 0, 0.9);
     border-radius: 50%;
     box-shadow: 0 0 10px rgba(128, 0, 0, 0.9);
@@ -769,13 +773,14 @@ body::before {
     animation-delay: 2s;
 }
 
-/* Center Lock */
+/* Center Lock - Scale with rem/em or viewport */
 .lock-center {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 4rem;
+    /* Consider scaling this with query to avoid overlapping */
     z-index: 10;
     animation: lock-pulse 2s ease-in-out infinite;
     filter: drop-shadow(0 0 20px rgba(128, 0, 0, 0.8));
@@ -1762,13 +1767,14 @@ textarea.cyber-input:focus {
 
 /* --- Mobile Responsiveness --- */
 @media (max-width: 768px) {
+
     /* 1. Navigation */
     .navbar {
         flex-direction: column;
         padding: 1rem;
         gap: 1rem;
     }
-    
+
     .nav-left {
         width: 100%;
         justify-content: center;
@@ -1783,7 +1789,8 @@ textarea.cyber-input:focus {
     }
 
     .quote-floating {
-        display: none; /* Too crowded for mobile */
+        display: none;
+        /* Too crowded for mobile */
     }
 
     .nav-right {
@@ -1791,11 +1798,12 @@ textarea.cyber-input:focus {
         justify-content: center;
         gap: 1.5rem;
     }
-    
+
     /* 2. Hero Section */
     .hero {
         padding: 2rem 1.5rem;
-        flex-direction: column-reverse; /* Animation on top, text below */
+        flex-direction: column-reverse;
+        /* Animation on top, text below */
         text-align: center;
         gap: 3rem;
     }
@@ -1805,7 +1813,8 @@ textarea.cyber-input:focus {
     }
 
     .hero-title {
-        font-size: 2.2rem; /* Reduce finding size */
+        font-size: 2.2rem;
+        /* Reduce finding size */
         margin-bottom: 1rem;
     }
 
@@ -1817,7 +1826,7 @@ textarea.cyber-input:focus {
         justify-content: center;
         flex-direction: column;
     }
-    
+
     .neon-btn {
         width: 100%;
         text-align: center;
@@ -1830,15 +1839,27 @@ textarea.cyber-input:focus {
         margin-right: 0;
     }
 
-    .radar-sweep, .radar-line {
+    .radar-sweep,
+    .radar-line {
         width: 260px;
         height: 260px;
     }
-    
-    .shield-outer-layer { width: 240px; height: 240px; }
-    .shield-middle-layer { width: 180px; height: 180px; }
-    .shield-inner-layer { width: 130px; height: 130px; }
-    
+
+    .shield-outer-layer {
+        width: 240px;
+        height: 240px;
+    }
+
+    .shield-middle-layer {
+        width: 180px;
+        height: 180px;
+    }
+
+    .shield-inner-layer {
+        width: 130px;
+        height: 130px;
+    }
+
     /* 4. Metrics */
     .metrics {
         flex-direction: column;
@@ -1852,11 +1873,12 @@ textarea.cyber-input:focus {
 
     /* 5. How it Works (Features) */
     .security-features {
-        grid-template-columns: 1fr; /* Stack vertically */
+        grid-template-columns: 1fr;
+        /* Stack vertically */
         padding: 0 1rem;
         gap: 1.5rem;
     }
-    
+
     .section-title {
         font-size: 2rem;
         padding: 0 1rem;
@@ -1864,10 +1886,12 @@ textarea.cyber-input:focus {
 
     /* 6. Dashboard specific adjustments */
     .dashboard-container {
-        grid-template-columns: 1fr; /* Stack sidebar and main content */
+        grid-template-columns: 1fr;
+        /* Stack sidebar and main content */
     }
 
     .stats-grid {
-        grid-template-columns: 1fr; /* Stack stats cards */
+        grid-template-columns: 1fr;
+        /* Stack stats cards */
     }
 }
