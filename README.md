@@ -58,17 +58,7 @@ Verified benchmarks on test datasets:
     ```
     Access the dashboard at `http://127.0.0.1:5000`
 
-## ☁️ Deployment (Render/Cloud)
 
-This project is "Cloud Ready" with `gunicorn` and `Procfile` configured.
-
-1.  Push this code to a **GitHub** repository.
-2.  Login to **Render.com** (or any PaaS).
-3.  Create a **New Web Service**.
-4.  Connect your repo.
-5.  Render will auto-detect the Python environment. Click **Deploy**.
-
-> **Note**: On free tier hosting with ephemeral filesystems (like Render Free), the "Self-Learning" database resets on every redeploy. For persistent learning, connect a PostgreSQL database.
 
 ## 🧪 Testing the Scanner
 
