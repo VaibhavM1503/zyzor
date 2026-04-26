@@ -8,3 +8,4 @@ requests
 gunicorn
 python-logging-loki
 python-dotenv
+groq
