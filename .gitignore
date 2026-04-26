@@ -26,6 +26,10 @@ venv/
 env/
 .env
 
+# Installers
+*.ps1
+*.zip
+
 # Logs and Databases
 *.log
 logs/
