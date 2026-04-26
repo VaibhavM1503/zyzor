@@ -6,3 +6,5 @@ scikit-learn
 lightgbm
 requests
 gunicorn
+python-logging-loki
+python-dotenv

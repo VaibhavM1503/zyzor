@@ -5,14 +5,39 @@ import json
 import logging
 import os
 from datetime import datetime
+import logging_loki
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Ensure logs directory exists
 if not os.path.exists('logs'):
     os.makedirs('logs')
 
 # Configure Logging
-logging.basicConfig(filename='logs/waf_system.log', level=logging.INFO, 
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+if logger.hasHandlers():
+    logger.handlers.clear()
+
+LOKI_URL = os.getenv("GRAFANA_LOKI_URL")
+LOKI_USER = os.getenv("GRAFANA_LOKI_USER")
+LOKI_PASSWORD = os.getenv("GRAFANA_LOKI_PASSWORD")
+
+if LOKI_URL and LOKI_USER and LOKI_PASSWORD:
+    loki_handler = logging_loki.LokiHandler(
+        url=LOKI_URL,
+        tags={"application": "cogniwas-waf"},
+        auth=(LOKI_USER, LOKI_PASSWORD),
+        version="1",
+    )
+    loki_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+    logger.addHandler(loki_handler)
+else:
+    file_handler = logging.FileHandler('logs/waf_system.log')
+    file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+    logger.addHandler(file_handler)
 
 class WAFAttackLog:
     STATS_FILE = 'logs/attack_stats.json'
@@ -77,7 +102,6 @@ class VulnerabilityScanner:
     """
     
     PATTERNS = {
-        # Standard
         "SQL Injection": {
             "regex": [
                 r"(?i)(\b(OR|AND)\s+['\"]?1['\"]?\s*=\s*['\"]?1)",
@@ -104,82 +128,23 @@ class VulnerabilityScanner:
             "impact": "Session hijacking, malicious redirects.",
             "remediation": "Encode/Escape output context-specifically (HTML entities, URL encoding)."
         },
-        "CSRF": {
-            "regex": [], 
-            # Logic check: Missing CSRF token in POST body heuristic
-            "custom_check": "check_csrf_heuristics",
-            "desc": "Potential CSRF attempt (missing anti-csrf token).",
-            "cwe": "CWE-352",
-            "impact": "Unauthorized actions on behalf of authenticated user.",
-            "remediation": "Implement Anti-CSRF tokens (SameSite cookies, custom headers)."
-        },
-        "Access Control (IDOR)": {
+        "Command Injection": {
             "regex": [
-                r"(?i)\b(id|user_id|account_id|doc_id|order_id|customer_id)\s*=\s*\d+" 
+                r"(?i)(;|\||`|&&)\s*(ls|cat|whoami|echo|ping|wget|curl)\b"
             ],
-            "desc": "Direct Object Reference pattern detected.",
-            "cwe": "CWE-639",
-            "impact": "Unauthorized access to other user's data.",
-            "remediation": "Use indirect object references (session-based) or strict access control checks."
+            "desc": "Malicious OS command execution attempt.",
+            "cwe": "CWE-78",
+            "impact": "Full system compromise, remote code execution.",
+            "remediation": "Avoid constructing commands from user input. Use safe API alternatives."
         },
-        "Clickjacking": {
-             # Logic: Detect if X-Frame-Options is referenced or needed
-             "regex": [],
-             "custom_check": "check_clickjacking_heuristics",
-             "desc": "Missing X-Frame-Options or CSP frame-ancestors.",
-             "cwe": "CWE-1021",
-             "impact": "UI Redressing, tricking users into clicking hidden elements.",
-             "remediation": "Set 'X-Frame-Options: DENY' or 'Content-Security-Policy: frame-ancestors \'none\''."
-        },
-        "DOM Vulnerability": {
+        "NoSQL Injection": {
             "regex": [
-                r"(?i)(location\.hash|document\.write|innerHTML)\s*="
+                r"(?i)(\$gt|\$ne|\$where|\$regex)\s*:"
             ],
-            "desc": "Unsafe DOM manipulation detected.",
-            "cwe": "CWE-79",
-            "impact": "Client-side XSS.",
-            "remediation": "Avoid innerHTML. Use textContent or DOMPurify."
-        },
-
-        # Advanced & Modern
-        "SSRF": {
-            "regex": [
-                r"(?i)(TARGET|url|uri|webhook)\s*=\s*http:\/\/(localhost|127\.0\.0\.1|169\.254\.169\.254|internal)"
-            ],
-            "desc": "Suspicious internal URL Detected.",
-            "cwe": "CWE-918",
-            "impact": "Access to internal services/cloud metadata.",
-            "remediation": "Whitelist allowed domains. Disable HTTP redirections."
-        },
-        "Web Cache Poisoning": {
-             "regex": [
-                 r"(?i)X-Forwarded-Host:",
-                 r"(?i)X-Host:",
-             ],
-             "desc": "Suspicious Cache-Key headers detected.",
-             "cwe": "CWE-444",
-             "impact": "Serving malicious content to other users via cache.",
-             "remediation": "Disable unkeyed inputs in cache keys (e.g., X-Forwarded-Host)."
-        },
-        "HTTP Request Smuggling": {
-            "regex": [],
-            "custom_check": "check_smuggling_heuristics",
-            "desc": "Conflicting Transfer-Encoding and Content-Length headers.",
-            "cwe": "CWE-444",
-            "impact": "Bypass security controls, cache poisoning.",
-            "remediation": "Reject requests with both TE and CL headers. Prefer HTTP/2."
-        },
-        "Insecure Deserialization / RCE": {
-             "regex": [
-                 r"(?i)(rO0AB|aced0005|pyobject|pickle)", # Base64 signatures for Java/Python serialization
-                 r"(?i)\%\{\(#", # OGNL expression start (Struts2)
-                 r"(?i)\@java\.lang\.", # Java static method call in OGNL
-                 r"(?i)ognl\.OgnlContext" # OGNL Context reference
-             ],
-             "desc": "Serialized object or Remote Code Execution (RCE) attempt detected.",
-             "cwe": "CWE-502",
-             "impact": "Remote Code Execution (RCE).",
-             "remediation": "Do not accept serialized objects from untrusted sources. Update vulnerable frameworks (e.g. Struts2)."
+            "desc": "Malicious NoSQL query parameter manipulation.",
+            "cwe": "CWE-943",
+            "impact": "Data theft, bypass authentication in NoSQL DBs.",
+            "remediation": "Sanitize inputs and use parameterized NoSQL queries."
         },
         "Web LLM Attack": {
             "regex": [
@@ -189,15 +154,6 @@ class VulnerabilityScanner:
             "cwe": "CWE-LLM01",
             "impact": "Model manipulation, policy bypass.",
             "remediation": "Input validation, rigorous prompt engineering, separate context layers."
-        },
-        "Host Header Attack": {
-            # Typically logic, but if "Host" header is present in body or strange place
-            "regex": [],
-             "custom_check": "check_host_header_heuristics",
-             "desc": "Malicious Host Header injection.",
-             "cwe": "CWE-74",
-             "impact": "Password reset poisoning, cache poisoning.",
-             "remediation": "Validate Host header against whitelist of allowed domains."
         }
     }
 
@@ -218,31 +174,6 @@ class VulnerabilityScanner:
                         "info": info
                     }
 
-        # 2. Custom Heuristics Checks
-        # HTTP Request Smuggling
-        if "Content-Length" in payload_text and "Transfer-Encoding" in payload_text:
-             info = VulnerabilityScanner.PATTERNS["HTTP Request Smuggling"]
-             return {"allowed": False, "type": "HTTP Request Smuggling", "match": "Content-Length & Transfer-Encoding", "info": info}
-
-        # CSRF Heuristic (Very simple: matches "POST" but no typical token names)
-        # Only if it looks like a HTTP POST
-        if "POST " in payload_text and not re.search(r"(?i)(csrf|token|xsrf)", payload_text):
-             # Blocking potential CSRF
-             info = VulnerabilityScanner.PATTERNS["CSRF"]
-             return {"allowed": False, "type": "CSRF", "match": "Missing CSRF Token in POST", "info": info}
-
-        # Host Header Attack Heuristic
-        # Detects X-Original-Host or if Host header is manipulated to be "evil" (demo purpose)
-        if "X-Original-Host" in payload_text:
-             info = VulnerabilityScanner.PATTERNS["Host Header Attack"]
-             return {"allowed": False, "type": "Host Header Attack", "match": "X-Original-Host Header Detected", "info": info}
-        
-        # Check for Host: evil... pattern as per user example
-        if re.search(r"(?i)Host:\s*evil", payload_text):
-             info = VulnerabilityScanner.PATTERNS["Host Header Attack"]
-             return {"allowed": False, "type": "Host Header Attack", "match": "Malicious Host Header", "info": info}
-
-
         return {"allowed": True}
 
 
@@ -251,6 +182,8 @@ class WAFEngine:
     
     @staticmethod
     def inspect_request(client_ip, raw_input):
+        from src.hybrid_waf.utils.threat_explainer import explainer
+        
         # Log every request attempt count
         WAFAttackLog.increment_request_count()
 
@@ -272,35 +205,119 @@ class WAFEngine:
                 }
             }
 
-        # Step 2: Vulnerability Detection
-        result = VulnerabilityScanner.scan(raw_input)
-        
-        if not result["allowed"]:
-            attack_type = result["type"]
-            info = result["info"]
-            match_str = result["match"]
-            
-            WAFAttackLog.log_attack(client_ip, attack_type, f"{info['desc']} Match: {match_str}")
-            
-            return {
-                "status": "blocked",
-                "message": f"Blocked: {attack_type}",
-                "analysis": {
-                    "parsed_view": {"raw": raw_input},
-                    "flaw_highlight": match_str,
-                    "cwe_info": {
-                        "name": attack_type,
-                        "id": info["cwe"],
-                        "owasp": "Unknown" # can add if needed
-                    },
-                    "remediation": info["remediation"],
-                    "ai_explanation": f"The system detected a pattern indicative of {attack_type}. {info['desc']}",
-                    "location": "Application Layer",
-                    "impact": info["impact"]
-                }
-            }
+        raw_lower = raw_input.lower()
 
-        # Step 3: Valid Request
+        # Step 2: Local Common Payload DB Check (O(1) Speed Bypass)
+        local_db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), "common_payloads.json")
+        try:
+            if not os.path.exists(local_db_path):
+                 local_db_path = "common_payloads.json"
+            with open(local_db_path, "r") as f:
+                 common_db = json.load(f)
+                 
+            for attack_cat, signatures in common_db.items():
+                 for sig in signatures:
+                      if sig.lower() in raw_lower:
+                           # Block immediately, no AI call needed
+                           ai_exp = f"System identified a known standard {attack_cat} signature locally without API check."
+                           
+                           WAFAttackLog.log_attack(client_ip, attack_cat, sig)
+                           return {
+                               "status": "blocked",
+                               "message": f"Blocked: {attack_cat}",
+                               "analysis": {
+                                   "parsed_view": {"raw": raw_input},
+                                   "flaw_highlight": sig,
+                                   "cwe_info": {
+                                       "name": attack_cat,
+                                       "id": "Local-DB-Classified",
+                                       "owasp": "Unknown" 
+                                   },
+                                   "remediation": f"Validate inputs against {attack_cat} patterns locally.",
+                                   "ai_explanation": ai_exp,
+                                   "location": "Local Signature Matcher",
+                                   "impact": "Common payload execution attempt."
+                               }
+                           }
+        except Exception as e:
+            logging.error(f"Local DB Load Exception: {e}")
+
+        # Step 2.5: Local Machine Learning (Random Forest) Check
+        from src.hybrid_waf.utils.request_utils import parse_raw_request
+        from src.hybrid_waf.utils.preprocessor import extract_features
+        from src.hybrid_waf.utils.ml_checker import check_ml_prediction
+        
+        try:
+            parsed = parse_raw_request(raw_input)
+            features = extract_features(parsed.get('uri', ''), parsed.get('uri', ''), parsed.get('body', ''))
+            
+            
+            ml_pred = check_ml_prediction(features)
+            
+            # Step 3: Use AI (ThreatExplainer) for Zero-Day Verification & Exact Highlighting
+            ai_result = explainer.explain(raw_input)
+            attack_type = ai_result.get("attack_type", "suspicious").strip()
+            
+            # If Model flagged OR AI flagged, treat as Zero-Day / Novel threat
+            if ml_pred == 1 or attack_type != "Safe":
+                # Ensure we have a string flag
+                final_attack_type = attack_type if attack_type != "Safe" else "ML Detected"
+                
+                # The AI generated 'flaw' parameter should contain the exact sub-string of raw_input
+                flaw = ai_result.get("flaw", "")
+                if not flaw or flaw not in raw_input:
+                    # Fallback intelligently: Highlight the body payload or URI instead of HTTP Headers
+                    parsed_req = parse_raw_request(raw_input)
+                    if parsed_req.get('body') and len(parsed_req['body']) > 2:
+                        flaw = parsed_req['body'].strip()
+                    else:
+                        uri_val = parsed_req.get('uri', '')
+                        flaw = uri_val if uri_val != "/" else raw_input.split('\n')[0]
+                
+                # SELF-LEARNING MECHANISM: Log features to DB and Retrain Model async
+                from src.hybrid_waf.utils.database import log_request_data
+                from src.hybrid_waf.utils.trainer import retrain_model
+                import threading
+                
+                # Log the confirmed malicious features directly to the SQLite DB
+                log_request_data(features, 1) # 1 = Malicious
+                
+                # Fire and forget background retrain thread
+                threading.Thread(target=retrain_model, daemon=True).start()
+                
+                WAFAttackLog.log_attack(client_ip, final_attack_type, flaw)
+                return {
+                    "status": "blocked",
+                    "message": f"Blocked: {final_attack_type}",
+                    "analysis": {
+                        "parsed_view": {"raw": raw_input},
+                        "flaw_highlight": flaw, # Exact string pinpointed by Groq logic
+                        "cwe_info": {
+                            "name": final_attack_type,
+                            "id": "AI-ZeroDay-Self-Learning",
+                            "owasp": "Unknown" 
+                        },
+                        "remediation": ai_result.get("remediation", "Review payload properties."),
+                        "ai_explanation": ai_result.get("text", "Our AI identified a novel/obfuscated threat syntax."),
+                        "location": ai_result.get("location", "Application Payload"),
+                        "impact": ai_result.get("impact", "Potential zero-day exploitation.")
+                    }
+                }
+                
+        except Exception as e:
+            logging.error(f"ML / DB Processing Exception: {e}")
+            
+        # If we got here, neither ML nor AI found a threat. 
+        # Optionally log safe features to DB as 0 for balanced training
+        try:
+             parsed = parse_raw_request(raw_input)
+             features = extract_features(parsed.get('uri', ''), parsed.get('uri', ''), parsed.get('body', ''))
+             from src.hybrid_waf.utils.database import log_request_data
+             log_request_data(features, 0)
+        except Exception:
+             pass
+
+        # Step 4: Valid/Clean Hybrid Request if Local is clean AND AI returned 'Safe'
         return {
             "status": "valid", 
             "message": "Request is Safe", 
@@ -309,7 +326,7 @@ class WAFEngine:
                 "flaw_highlight": "",
                 "cwe_info": {},
                 "remediation": "",
-                "ai_explanation": "No known patterns detected.",
+                "ai_explanation": "Both Local DB and Zero-Day AI scan detected no actionable vulnerabilities.",
                 "location": "",
                 "impact": ""
             }
@@ -317,4 +334,14 @@ class WAFEngine:
 
     @staticmethod
     def get_dashboard_stats():
-        return WAFAttackLog.get_stats()
+        stats = WAFAttackLog.get_stats()
+        # Try to attach ML accuracy stats if available
+        ml_stats_path = os.path.join(os.path.dirname(__file__), 'models/ml_stats.json')
+        if os.path.exists(ml_stats_path):
+            try:
+                with open(ml_stats_path, 'r') as f:
+                    stats['ml_stats'] = json.load(f)
+            except Exception as e:
+                logging.error(f"Error loading ML stats: {e}")
+        return stats
+

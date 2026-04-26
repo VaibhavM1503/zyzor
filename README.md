@@ -1,10 +1,10 @@
-# Zyzor - Hybrid AI Request Scanner
+# CogniWAS - Hybrid AI Request Scanner
 
 **Predict. Protect. Prevail.**
 
-Zyzor is an advanced **Hybrid AI Request Scanner** that merges traditional static defenses with cutting-edge machine learning to provide robust protection against modern web threats. Unlike standard Scanners that rely solely on improved regular expressions, Zyzor adapts to new attack vectors in real-time.
+CogniWAS is an advanced **Hybrid AI Request Scanner** that merges traditional static defenses with cutting-edge machine learning to provide robust protection against modern web threats. Unlike standard Scanners that rely solely on improved regular expressions, CogniWAS adapts to new attack vectors in real-time.
 
-![Zyzor Logo](static/logo.png)
+![CogniWAS Logo](static/logo.png)
 
 ## 🚀 Key Features
 
@@ -14,12 +14,12 @@ Zyzor is an advanced **Hybrid AI Request Scanner** that merges traditional stati
 *   **Layer 3: AI Anomaly Detection**: A Random Forest Machine Learning model analyzes request entropy, character distribution, and structural features to detect **Zero-Day** and **Obfuscated** attacks that bypass static rules.
 
 ### 2. 🧠 Adaptive Self-Learning
-Zyzor gets smarter with every attack.
+CogniWAS gets smarter with every attack.
 *   **Feedback Loop**: When a new attack is detected by the AI, it is logged and used to retrain the model.
 *   **Auto-Updates**: The system automatically updates its internal rules to block similar future attacks instantly.
 
 ### 3. 📝 Explainable Security (XAI)
-Security shouldn't be a black box. Zyzor integrates with LLMs (Large Language Models) to explain **WHY** a request was blocked in plain English, helping developers understand vulnerabilities.
+Security shouldn't be a black box. CogniWAS integrates with LLMs (Large Language Models) to explain **WHY** a request was blocked in plain English, helping developers understand vulnerabilities.
 
 ## 📊 Performance Specs
 
@@ -43,8 +43,8 @@ Verified benchmarks on test datasets:
 
 1.  **Clone the Repository**
     ```bash
-    git clone https://github.com/VaibhavM1503/Zyzor-Scanner.git
-    cd Zyzor-Scanner
+    git clone https://github.com/VaibhavM1503/CogniWAS-Scanner.git
+    cd CogniWAS-Scanner
     ```
 
 2.  **Install Dependencies**
@@ -62,7 +62,7 @@ Verified benchmarks on test datasets:
 
 ## 🧪 Testing the Scanner
 
-Zyzor comes with a built-in "Self-Check" suite. On startup, it runs a series of safe, simulated attacks against itself to verify that all protection layers are active.
+CogniWAS comes with a built-in "Self-Check" suite. On startup, it runs a series of safe, simulated attacks against itself to verify that all protection layers are active.
 
 You can also send requests via `curl` or Postman:
 

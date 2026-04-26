@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zyzor – AI-Powered Web Security</title>
+    <title>CogniWAS – AI-Powered Web Security</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -47,8 +47,8 @@
     <nav class="navbar">
         <div class="nav-left">
             <span class="logo">
-                <img src="{{ url_for('static', filename='logo.png') }}" alt="Zyzor Logo" class="logo-icon">
-                <span class="logo-text rubik-mono-one-regular">Zyzor</span>
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="CogniWAS Logo" class="logo-icon">
+                <span class="logo-text rubik-mono-one-regular">CogniWAS</span>
             </span>
             <div class="quote-floating">Predict. Protect. Prevail.</div>
         </div>
@@ -91,7 +91,7 @@
                 </h1>
                 <p class="hero-text">
                     Powered by the AI detection model,
-                    Zyzor Scanner integrates seamlessly with modern protocols and rollups to block most of the
+                    CogniWAS Scanner integrates seamlessly with modern protocols and rollups to block most of the
                     cyberattacks.
                 </p>
                 <div class="hero-buttons">
@@ -131,23 +131,23 @@
         <!-- Metrics Section -->
         <section class="metrics yanone-kaffeesatz-metrics">
             <div class="metric-card">
-                <span class="metric-value">96.4%</span>
-                <span class="metric-label">Recall Rate</span>
-            </div>
-            <div class="metric-card">
-                <span class="metric-value">1.2%</span>
-                <span class="metric-label">False Positive Rate</span>
+                <span class="metric-value" id="ai-accuracy-value">98.5%</span>
+                <span class="metric-label">RF Model Accuracy</span>
             </div>
             <div class="metric-card">
                 <span class="metric-value">~15ms</span>
                 <span class="metric-label">Classification Time</span>
             </div>
+            <div class="metric-card">
+                <span class="metric-value" id="total-samples-value">Multiple</span>
+                <span class="metric-label">Training Samples</span>
+            </div>
         </section>
 
-        <!-- How Zyzor Works Section -->
+        <!-- How CogniWAS Works Section -->
         <section class="how-it-works yanone-kaffeesatz-how">
             <div class="section-container">
-                <h2 class="section-title">How Does Zyzor Works? </h2>
+                <h2 class="section-title">How Does CogniWAS Works? </h2>
                 <div class="security-features">
                     <div class="feature-box">
                         <div class="feature-icon">🛡️</div>
@@ -166,7 +166,7 @@
                     <div class="feature-box">
                         <div class="feature-icon">🔄</div>
                         <h3>Layer 3: Self-Learning Evolution</h3>
-                        <p>Zyzor gets smarter every day. When it catches a new attack, it remembers it and updates its
+                        <p>CogniWAS gets smarter every day. When it catches a new attack, it remembers it and updates its
                             own brain to recognize it next time. Plus, it explains <i>why</i> it blocked something in
                             plain English.</p>
                     </div>
@@ -174,27 +174,11 @@
             </div>
         </section>
 
-        <!-- Testimonials Section -->
-        <section class="testimonials yanone-kaffeesatz-testimonials">
-            <h2>What Our Users Say</h2>
-            <div class="testimonial-cards">
-                <div class="card">
-                    <img src="{{ url_for('static', filename='arjun_mishra_pic.jpg') }}" alt="Arjun Mishra"
-                        class="testimonial-img">
-                    <p>"In the timeline of exploitation,
-                        I found this as a golden Technique or methodology, The website is efficiently gave me the
-                        results of checking the payloads over the urls,files,and apps successfully..
-                        I guarantee that the website will fulfill all your requirements-To be secured,To get the
-                        environment that is free from the vulnerabilities and bugs,"</p>
-                    <span>- Arjun Mishra, Cybersecurity Analyst</span>
-                </div>
-            </div>
-        </section>
     </main>
 
     <!-- Footer -->
     <footer>
-        <p>© 2026 Zyzor | Hybrid AI Request Verification | <a href="https://github.com/VaibhavM1503" target="_blank"
+        <p>© 2026 CogniWAS | Hybrid AI Request Verification | <a href="https://github.com/VaibhavM1503" target="_blank"
                 rel="noopener noreferrer" class="neon-link">Om™️</a></p>
     </footer>
 

@@ -1,17 +1,17 @@
 PROJECT EXPLANATION & INTERVIEW PREPARATION GUIDE
 --------------------------------------------------
 CONTEXT: 3rd Year B.Tech CSE Student Pitching to a Recruiter.
-PROJECT NAME: Zyzor - Hybrid AI Request Scanner.
+PROJECT NAME: CogniWAS - Hybrid AI Request Scanner.
 
 ---
 
 PART 1: THE "ELEVATOR PITCH" (How to explain this in 2 minutes)
 
-"Good morning/afternoon. The project I built is called 'Zyzor', and it’s a Hybrid AI Request Scanner.
+"Good morning/afternoon. The project I built is called 'CogniWAS', and it’s a Hybrid AI Request Scanner.
 
 The problem I identified with traditional scanners is that they rely purely on static rules (regex). If a hacker changes just one character in a malicious payload, they can often bypass the scanner. On the other hand, purely AI-based scanners can be slow and prone to false alarms.
 
-My solution, Zyzor, uses a 'Hybrid Architecture' to get the best of both worlds.
+My solution, CogniWAS, uses a 'Hybrid Architecture' to get the best of both worlds.
 
 Here is how it works:
 1. First, it uses a high-speed 'Traffic Control' layer to block simple spam and brute-force attacks immediately.
@@ -75,4 +75,4 @@ This automated suite runs on every startup, acting as a Continuous Integration (
 
 PART 3: SUMMARY FOR RECRUITER
 
-"In simple terms, Zyzor is a security system that doesn't just block what it knows, but learns to recognize what it hasn't seen yet."
+"In simple terms, CogniWAS is a security system that doesn't just block what it knows, but learns to recognize what it hasn't seen yet."

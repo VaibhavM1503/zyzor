@@ -28,14 +28,7 @@ document.getElementById("submit-btn").addEventListener("click", function () {
             let rawText = analysis.parsed_view.raw || userInput;
             let flawedPart = analysis.flaw_highlight;
 
-            if (flawedPart && rawText.includes(flawedPart)) {
-                // Split by the flaw to insert span
-                // Note: This is a simple replace, for multiple occurrences simple replaceAll is okay for demo
-                let escapedFlaw = escapeHtml(flawedPart);
-                let highlightedHtml = rawText.split(flawedPart).join(`<span class="malicious-highlight">${escapedFlaw}</span>`);
-                // We need to escape the REST of the text to avoid XSS in our own dashboard, 
-                // but carefully so we don't double escape the span we just made. 
-                // A safer way:
+            if (flawedPart && rawText.toLowerCase().includes(flawedPart.toLowerCase())) {
                 rawView.innerHTML = highlightText(rawText, flawedPart);
             } else {
                 rawView.textContent = rawText;
@@ -197,15 +190,19 @@ function escapeHtml(text) {
 function highlightText(fullText, subString) {
     if (!subString) return escapeHtml(fullText);
 
-    // Safely escape everything first? No, we need to highlight specific parts.
-    // We split by substring, escape the parts, then join with the span.
-    const parts = fullText.split(subString);
-    const escapedSub = escapeHtml(subString);
-
-    // Map each part to escaped version
-    const escapedParts = parts.map(escapeHtml);
-
-    return escapedParts.join(`< span class="malicious-highlight" > ${escapedSub}</span > `);
+    // Escape regex spec char to avoid invalid regex error
+    const escapeRegex = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regexSub = escapeRegex(subString);
+    const regex = new RegExp(`(${regexSub})`, 'gi');
+    
+    const parts = fullText.split(regex);
+    // parts array alternates between non-matched text and matched text
+    return parts.map(part => {
+        if (part.toLowerCase() === subString.toLowerCase()) {
+            return `<span class="malicious-highlight">${escapeHtml(part)}</span>`;
+        }
+        return escapeHtml(part);
+    }).join("");
 }
 
 function getScoreColor(score) {

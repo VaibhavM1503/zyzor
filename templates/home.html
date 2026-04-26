@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zyzor Scanner - Dashboard</title>
+    <title>CogniWAS Scanner - Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -65,8 +65,8 @@
     <nav class="navbar">
         <div class="nav-left">
             <span class="logo">
-                <img src="{{ url_for('static', filename='logo.png') }}" alt="Zyzor Logo" class="logo-icon">
-                <span class="logo-text rubik-mono-one-regular">Zyzor Scanner</span>
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="CogniWAS Logo" class="logo-icon">
+                <span class="logo-text rubik-mono-one-regular">CogniWAS Scanner</span>
             </span>
             <div class="quote-floating">Predict. Protect. Prevail.</div>
         </div>
@@ -94,7 +94,7 @@
 
         <div class="checker-container">
             <div class="checker-header">
-                <h2 class="bungee-regular">Zyzor Request Checker</h2>
+                <h2 class="bungee-regular">CogniWAS Request Checker</h2>
                 <p>Enter your request below to analyze potential security threats using our advanced AI detection
                     system.</p>
             </div>
@@ -108,38 +108,13 @@
                     <div class="control-wrapper">
                         <select id="preset-dropdown" class="cyber-input"
                             style="flex: 7; padding: 0.875rem 1rem; cursor: pointer; background-color: #050510; color: #00f3ff; border: 2px solid #00f3ff; border-radius: 8px; font-family: inherit; font-size: 1rem; outline: none; transition: all 0.3s ease;">
-                            <option value="" disabled selected style="color: #888;">👇 Select an Attack Payload (No
-                                Input? Use this)</option>
-                            <option value="sqli_url" style="color: #00f3ff; background: #050510;">SQL Injection
-                                (One-Line)</option>
-                            <option value="sqli_raw" style="color: #00f3ff; background: #050510;">SQL Injection (Raw
-                                HTTP)</option>
-                            <option value="xss_url" style="color: #00f3ff; background: #050510;">XSS (One-Line)</option>
-                            <option value="xss_raw" style="color: #00f3ff; background: #050510;">XSS (Raw HTTP)</option>
-                            <option value="csrf" style="color: #00f3ff; background: #050510;">CSRF (POST)</option>
-                            <option value="idor_url" style="color: #00f3ff; background: #050510;">IDOR (One-Line)
-                            </option>
-                            <option value="idor_raw" style="color: #00f3ff; background: #050510;">IDOR (Raw HTTP)
-                            </option>
-                            <option value="dom" style="color: #00f3ff; background: #050510;">DOM-based XSS</option>
-                            <option value="ssrf_url" style="color: #00f3ff; background: #050510;">SSRF (One-Line)
-                            </option>
-                            <option value="ssrf_json" style="color: #00f3ff; background: #050510;">SSRF (JSON Body)
-                            </option>
-                            <option value="cache_poison" style="color: #00f3ff; background: #050510;">Web Cache
-                                Poisoning</option>
-                            <option value="smuggling" style="color: #00f3ff; background: #050510;">HTTP Request
-                                Smuggling</option>
-                            <option value="deserialization" style="color: #00f3ff; background: #050510;">Insecure
-                                Deserialization/RCE</option>
-                            <option value="llm_url" style="color: #00f3ff; background: #050510;">Web LLM Attack
-                                (One-Line)</option>
-                            <option value="llm_json" style="color: #00f3ff; background: #050510;">Web LLM Attack (JSON)
-                            </option>
-                            <option value="host_header" style="color: #00f3ff; background: #050510;">HTTP Host Header
-                                Attack</option>
-                            <option value="equifax" style="color: #00f3ff; background: #050510;">Equifax Style (Complex)
-                            </option>
+                            <option value="" disabled selected style="color: #888;">👇 Select an Attack Payload (No Input? Use this)</option>
+                            <option value="sqli_url" style="color: #00f3ff; background: #050510;">SQLi</option>
+                            <option value="xss_url" style="color: #00f3ff; background: #050510;">XSS</option>
+                            <option value="llm_url" style="color: #00f3ff; background: #050510;">WebLLM</option>
+                            <option value="cmd_url" style="color: #00f3ff; background: #050510;">Command Injection</option>
+                            <option value="nosql_url" style="color: #00f3ff; background: #050510;">NoSQL Injection</option>
+                            <option value="zero_day_url" style="color: #00f3ff; background: #050510;">Suspicious (Unknown Payload)</option>
                         </select>
                         <button class="neon-btn" id="submit-btn"
                             style="flex: 2; padding: 0.875rem 2.5rem; white-space: nowrap;">Analyze</button>
@@ -153,32 +128,12 @@
                     <div class="control-wrapper" style="margin-top: 10px;">
                         <select id="info-dropdown" class="cyber-input"
                             style="width: 100%; padding: 0.875rem 1rem; cursor: pointer; background-color: #050510; color: #ff00ff; border: 2px solid #ff00ff; border-radius: 8px; font-family: inherit; font-size: 1rem; outline: none; transition: all 0.3s ease;">
-                            <option value="" disabled selected style="color: #888;">🤔 No idea about any attack? Click
-                                me!</option>
+                            <option value="" disabled selected style="color: #888;">🤔 No idea about any attack? Click me!</option>
                             <option value="sqli" style="color: #ff00ff; background: #050510;">SQL Injection</option>
-                            <option value="xss" style="color: #ff00ff; background: #050510;">XSS (Cross-Site Scripting)
-                            </option>
-                            <option value="csrf" style="color: #ff00ff; background: #050510;">CSRF (Cross-Site Request
-                                Forgery)</option>
-                            <option value="idor" style="color: #ff00ff; background: #050510;">IDOR (Insecure Direct
-                                Object References)</option>
-                            <option value="ssrf" style="color: #ff00ff; background: #050510;">SSRF (Server-Side Request
-                                Forgery)</option>
-                            <option value="rce" style="color: #ff00ff; background: #050510;">Command Injection / RCE
-                            </option>
-                            <option value="lfi" style="color: #ff00ff; background: #050510;">Path Traversal / LFI
-                            </option>
+                            <option value="xss" style="color: #ff00ff; background: #050510;">XSS (Cross-Site Scripting)</option>
+                            <option value="llm" style="color: #ff00ff; background: #050510;">WebLLM</option>
+                            <option value="rce" style="color: #ff00ff; background: #050510;">Command Injection</option>
                             <option value="nosql" style="color: #ff00ff; background: #050510;">NoSQL Injection</option>
-                            <option value="ldap" style="color: #ff00ff; background: #050510;">LDAP Injection</option>
-                            <option value="poison" style="color: #ff00ff; background: #050510;">Web Cache Poisoning
-                            </option>
-                            <option value="smuggling" style="color: #ff00ff; background: #050510;">HTTP Request
-                                Smuggling</option>
-                            <option value="deserialization" style="color: #ff00ff; background: #050510;">Insecure
-                                Deserialization</option>
-                            <option value="llm" style="color: #ff00ff; background: #050510;">Web LLM Injection</option>
-                            <option value="host_header" style="color: #ff00ff; background: #050510;">HTTP Host Header
-                                Attack</option>
                         </select>
                     </div>
 

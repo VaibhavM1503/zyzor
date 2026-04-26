@@ -117,8 +117,8 @@ def parse_raw_request(raw_text: str) -> dict:
             
     else:
         # Fallback: Treat as simple payload/URI or just body
-        # If it looks like a path (starts with /), treat as URI
-        if raw_text.startswith('/'):
+        # If it looks like a path (starts with /) or a full URL, treat as URI
+        if raw_text.startswith('/') or raw_text.startswith('http://') or raw_text.startswith('https://'):
              result["uri"] = raw_text
         else:
             # Treat strictly as input payload (e.g. user just pasted "UNION SELECT...")

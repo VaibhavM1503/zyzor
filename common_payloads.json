@@ -1,0 +1,45 @@
+{
+  "SQLi": [
+    "' OR '1'='1",
+    "\" OR \"1\"=\"1",
+    "' or 1=1--",
+    "\" or 1=1--",
+    "UNION SELECT",
+    "DROP TABLE",
+    "SELECT * FROM",
+    "%27%20OR%201%3D1"
+  ],
+  "XSS": [
+    "<script>",
+    "javascript:alert",
+    "onerror=alert",
+    "onload=alert",
+    "<img src=",
+    "document.cookie",
+    "<svg onload="
+  ],
+  "WebLLM": [
+    "ignore previous instructions",
+    "ignore system prompt",
+    "dan mode",
+    "do anything now",
+    "forget all instructions",
+    "system override",
+    "act as a developer"
+  ],
+  "Command Injection": [
+    "; ls -la",
+    "| whoami",
+    "`whoami`",
+    "`cat /etc/passwd`",
+    "; cat /etc/passwd",
+    "&& ls"
+  ],
+  "NoSQL Injection": [
+    "{\"$gt\": \"\"}",
+    "{\"$ne\": null}",
+    "{\"$where\":",
+    "sleep(",
+    "{\"$regex\":"
+  ]
+}
